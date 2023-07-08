@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h3 class="text-center">Найдены следующие книги:</h3>
+<div class="container d-flex justify-content-center">
+    <div class="row">
+        {% for book in books %}
+        <div class='col'>
+            <div class="card border-light mb-3" style="width: 18rem;">
+                <a href="{% url 'book_detail' id=book.id %}"><img style="max-height:400px;" src="{{book.cover.url}}"
+                                                                  class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <h6 style="color:red;">{{book.price}} &#8381;</h6>
+                    <p style='font-size:16px;' class="card-text">{{book.title|truncatechars:25}}
+                    <p class="card-text">{{book.author|truncatechars:23}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container bg-secondary text-light">
+    {% if page_obj.has_previous %}
+    <a href="/books?page={{ page_obj.previous_page_number }}"><img src="{% static 'buttons/back.png' %}" width="50"
+                                                                   height="50" alt="Пример"></a>
+    {% endif %}
+    <span class="page-current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                </span>
+    {% if page_obj.has_next %}
+    <a href="/books?page={{ page_obj.next_page_number }}"><img src="{% static 'buttons/next.png' %}" width="50"
+                                                               height="50" alt="Пример"></a>
+    {% endif %}
+</div>
+
+{% endblock content %}

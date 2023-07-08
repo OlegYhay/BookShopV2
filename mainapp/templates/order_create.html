@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h3 class="text-center">Оформление заказа</h3>
+<div class="container">
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Изображение</th>
+            <th scope="col">Hаименование</th>
+            <th scope="col">Кол-во</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Сумма</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for key,value in cart.items %}
+        <tr>
+            <th scope="row"><img class="bookcover3" src="{{ value.product.cover.url}}" height="150px;"/></th>
+            <td>{{value.product.title}}</td>
+            <td>{{value.quantity}}</td>
+            <td>{{value.product.price}}</td>
+            <td>{{value.total_price }}</td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+            <th scope="row">ВСЕГО</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th>{{itogsumm}} руб</th>
+        </tr>
+        </tbody>
+    </table>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {{form.name|as_crispy_field}}
+            {{form.secondname|as_crispy_field}}
+            {{form.email|as_crispy_field}}
+            {{form.fulladdress|as_crispy_field}}
+            {{form.notification|as_crispy_field}}
+            {{form.Payment|as_crispy_field}}
+            <div style="display: none;visibility: hidden;">
+                {{form.user|as_crispy_field}}
+                {{form.status|as_crispy_field}}
+            </div>
+            {{form.errors}}
+            <input class="btn btn-primary" type="submit" title="Оформить закза"/>
+        </form>
+    </div>
+</div>
+{% endblock content %}
