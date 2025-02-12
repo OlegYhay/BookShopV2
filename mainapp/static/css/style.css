@@ -1,0 +1,171 @@
+/* Эффект при наведении на карточку книги */
+.book-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Обновлённое правило для обложки книги */
+.book-cover {
+  object-fit: contain;
+  height: 300px;
+  width: 100%;
+  background-color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover .book-cover {
+  transform: scale(1.05);
+}
+
+/* Стили для детальной страницы книги */
+
+/* Оформление изображения книги */
+.book-detail-img {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Таблица с информацией о книге */
+.book-info-table th {
+  width: 40%;
+  color: #555;
+  font-weight: 500;
+}
+.book-info-table td {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Стилизация карточки с ценой и кнопкой "Добавить в корзину" */
+.add-to-cart-card {
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.add-to-cart-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Оформление описания книги */
+.book-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* Стили для карточек отзывов */
+.review-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+}
+.review-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Дополнительные отступы для разделителей */
+hr.my-5 {
+  border-top: 1px solid #ddd;
+}
+
+/* Стилизация формы отзыва */
+.card .form-label {
+  font-weight: 500;
+}
+
+/* Стили для карточек книг */
+.book-card {
+  max-width: 18rem;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Стили для изображения книги */
+.book-cover {
+  height: 300px;
+  width: 100%;
+  object-fit: contain;  /* Можно менять на 'cover' если хотите обрезку */
+  background-color: #fff;
+}
+
+/* Стили для цены книги */
+.book-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Пагинация: можно добавить небольшие отступы */
+.pagination .page-link {
+  padding: 0.5rem 0.75rem;
+}
+/* Улучшение внешнего вида карточки регистрации */
+.card {
+  border-radius: 10px;
+}
+
+.card-header {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Плавное появление кнопки при наведении */
+.btn-dark {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-dark:hover {
+  background-color: #343a40;
+  transform: translateY(-2px);
+}
+/* Стили для изображений книг в корзине */
+.book-cover-cart {
+  max-height: 150px;
+  width: auto;
+  object-fit: contain;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* Стили для изображений книги в корзине */
+.book-cover-checkout {
+  max-height: 150px;
+  width: auto;
+  object-fit: contain;
+  padding: 5px;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+/* Дополнительные отступы для карточек */
+.card {
+  border-radius: 8px;
+}
+
+/* Заголовок карточки оформления заказа */
+.card-header {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Кнопка отправки формы с плавным эффектом */
+.btn-primary {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}

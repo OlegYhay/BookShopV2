@@ -1,82 +1,70 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3 class="text-center">Корзина</h3>
-<br/>
-<div class="container">
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
+<div class="container my-5">
+  <h3 class="text-center mb-4">Корзина</h3>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <table class="table table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
             <th scope="col">Изображение</th>
-            <th scope="col">Hаименование</th>
-            <th scope="col">Кол-во</th>
-            <th scope="col">Цена</th>
-            <th scope="col">Сумма</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
+            <th scope="col">Наименование</th>
+            <th scope="col" class="text-center">Кол-во</th>
+            <th scope="col" class="text-center">Цена</th>
+            <th scope="col" class="text-center">Сумма</th>
+            <th scope="col" colspan="3" class="text-center">Действия</th>
+          </tr>
         </thead>
-
         <tbody>
-        {% for key,value in cart.items %}
-        <tr>
-            <th scope="row"><img class="bookcover3" src="{{ value.product.cover.url}}" height="150px;"/></th>
-            <td>{{value.product.title}}</td>
-            <td>{{value.quantity}}</td>
-            <td>{{value.product.price}}</td>
-            <td>{{value.total_price }}</td>
-            <td scope="col">
-                <form method="post" action="{% url 'cart_change' %}">
-                    {% csrf_token %}
-                    <input type="text"
-                           style="display:none;visibility:hidden;"
-                           value="{{value.product.id}}" name="book"/>
-                    <input type="text"
-                           style="display:none;visibility:hidden;"
-                           value="1" name="count"/>
-                    <button type="submit" class="btn btn-primary">+</button>
-                </form>
-            </td>
-            <td scope="col">
-                <form method="post" action="{% url 'cart_change' %}">
-                    {% csrf_token %}
-                    <input type="text"
-                           style="display:none;visibility:hidden;"
-                           value="{{value.product.id}}" name="book"/>
-                    <input type="text"
-                           style="display:none;visibility:hidden;"
-                           value="-1" name="count"/>
-                    <button type="submit" class="btn btn-primary">-</button>
-                </form>
-            </td>
+          {% for key, value in cart.items %}
+          <tr>
             <td>
-                <form method="post" action="{% url 'cart_change' %}">
-                    {% csrf_token %}
-                    <input type="text"
-                           style="display:none;visibility:hidden;"
-                           value="{{value.product.id}}" name="book"/>
-                    <input type="text"
-                           style="display:none;visibility:hidden;"
-                           value="-1000000000" name="count"/>
-                    <button type="submit" class="btn btn-primary">Удалить</button>
-                </form>
+              <img src="{{ value.product.cover.url }}" alt="{{ value.product.title }}" class="img-fluid book-cover-cart">
             </td>
-        </tr>
-        {% endfor %}
-
-        <tr>
-            <th scope="row">ВСЕГО</th>
-            <td></td>
-            <td></td>
-            <td></td>
-            <th>{{itogsumm}} руб</th>
-        </tr>
+            <td>{{ value.product.title }}</td>
+            <td class="text-center">{{ value.quantity }}</td>
+            <td class="text-center">{{ value.product.price }}</td>
+            <td class="text-center">{{ value.total_price }}</td>
+            <td class="text-center">
+              <form method="post" action="{% url 'cart_change' %}">
+                {% csrf_token %}
+                <input type="hidden" name="book" value="{{ value.product.id }}">
+                <input type="hidden" name="count" value="1">
+                <button type="submit" class="btn btn-sm btn-success">+</button>
+              </form>
+            </td>
+            <td class="text-center">
+              <form method="post" action="{% url 'cart_change' %}">
+                {% csrf_token %}
+                <input type="hidden" name="book" value="{{ value.product.id }}">
+                <input type="hidden" name="count" value="-1">
+                <button type="submit" class="btn btn-sm btn-warning">-</button>
+              </form>
+            </td>
+            <td class="text-center">
+              <form method="post" action="{% url 'cart_change' %}">
+                {% csrf_token %}
+                <input type="hidden" name="book" value="{{ value.product.id }}">
+                <input type="hidden" name="count" value="-1000000000">
+                <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <th scope="row" colspan="4" class="text-end">ВСЕГО</th>
+            <th class="text-center">{{ itogsumm }} руб</th>
+            <th colspan="3"></th>
+          </tr>
         </tbody>
-    </table>
-    {% if can_order %}
-    <button type="submit" class="btn btn-primary"><a href="{% url 'order_create' %}" style="color:white;">Оформить
-        заказ</a></button>
-    {% endif %}
+      </table>
+      {% if can_order %}
+      <div class="text-end">
+        <a href="{% url 'order_create' %}" class="btn btn-primary">Оформить заказ</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock content %}

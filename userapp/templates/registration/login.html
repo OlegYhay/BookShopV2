@@ -2,16 +2,24 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<br/>
-<h3 class="text-center">Авторизация</h3>
-<br/>
-<div class="container">
-    <form method="post">
-        
-        {{ form|crispy }}
-        {% csrf_token %}
-
-        <input class="btn btn-dark" type="submit" title="Войти">
-    </form>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-light text-center">
+          <h3 class="mb-0">Авторизация</h3>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-grid gap-2 mt-3">
+              <button type="submit" class="btn btn-dark">Войти</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock content %}

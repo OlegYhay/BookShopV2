@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, ListView, DetailView, CreateView
 
 from userapp.models import CustomUser
 from .forms import OrderCustomForm
-from .models import Book, Review, Order
+from .models import Book, Review, Order,CategoryBooks
 
 
 # Create your views here.
@@ -26,12 +26,42 @@ class Main_page(TemplateView):
         return context
 
 
+# views.py
+
+
 class BookList(ListView):
     model = Book
     template_name = "book_list.html"
     paginate_by = 8
     context_object_name = 'books'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        category_id = self.request.GET.get('category', '').strip()
+        search_query = self.request.GET.get('q', '').strip()
+
+        # Фильтр по категории (точное соответствие)
+        if category_id:
+            queryset = queryset.filter(category__id=category_id)
+
+        # Поиск по названию ИЛИ автору (учитываем, что author — ForeignKey)
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) | Q(author__name__icontains=search_query)
+            )
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = CategoryBooks.objects.all()
+
+        # Передаём в контекст текущие значения фильтров, чтобы сохранять их в форме
+        context['current_category'] = self.request.GET.get('category', '')
+        context['current_search_query'] = self.request.GET.get('q', '')
+
+        return context
 
 class BookSearchList(ListView):
     model = Book
@@ -40,18 +70,25 @@ class BookSearchList(ListView):
     context_object_name = 'books'
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
-        result = Book.objects.filter(
-            Q(title__icontains=query) | Q(title__icontains=query)
-        )
+        query = self.request.GET.get('q', '').strip()
+
+        if query:
+            result = Book.objects.filter(
+                Q(title__icontains=query) |  # Поиск по названию книги (без учета регистра)
+                Q(author__name__icontains=query)  # Поиск по имени автора (если author имеет поле name)
+            )
+        else:
+            result = Book.objects.none()  # Возвращаем пустой QuerySet, если запрос пустой
+
         return result
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        data = super(BookSearchList, self).get_context_data(**kwargs)
-        if len(data['books']) == 0:
-            data['mistake'] = 'Ничего не найдено!'
-        return data
+        data = super().get_context_data(**kwargs)
 
+        if not data['books']:  # Проверяем, если список книг пуст
+            data['mistake'] = 'Ничего не найдено!'
+
+        return data
 
 class BookDetail(DetailView):
     model = Book

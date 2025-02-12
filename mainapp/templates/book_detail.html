@@ -2,118 +2,110 @@
 {% load static %}
 
 {% block content %}
-<br/>
-<br/>
-<div class="container">
-    <div class="row">
-        <div class="col-3">
-            <img src="{{book.cover.url}}" width="100%"/>
-        </div>
-        <div class="col">
-            <h5>{{book.title}}</h5>
-            <h6>{{book.author}}</h6>
-            <table>
-                <table class="table">
-                    <tbody>
-                    <tr>
-
-                        <td>Артикул:</td>
-                        <td>{{book.id}}</td>
-                    </tr>
-                    <tr>
-                        <td>Издательство:</td>
-                        <td>{{book.copyright}}</td>
-                    </tr>
-                    <tr>
-                        <td>Возрастное ограничение:</td>
-                        <td>{{book.age_control}}</td>
-                    </tr>
-                    <tr>
-                        <td>Категория:</td>
-                        <td>{{book.category}}</td>
-                    </tr>
-                    <tr>
-                        <td>ISBN:</td>
-                        <td>{{book.ISBN}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </table>
-        </div>
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{book.price}} Р</h5>
-                    <form method="post" action="{% url 'cart_change' %}">
-                        {% csrf_token %}
-                        <input type="text"
-                               style="display:none;visibility:hidden;"
-                               value="{{book.id}}" name="book"/>
-                        <input type="text"
-                               style="display:none;visibility:hidden;"
-                               value="1" name="count"/>
-                        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
-                    </form>
-                    <p></p>
-                </div>
-            </div>
-        </div>
+<div class="container my-5">
+  <!-- Шапка книги -->
+  <div class="row">
+    <!-- Изображение книги -->
+    <div class="col-md-3">
+      <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-fluid rounded book-detail-img">
     </div>
-    <br/>
-    <h5 class="text-center">Описание</h5>
-    <div class="container">
-        <samp>{{book.description}}</samp>
+
+    <!-- Информация о книге -->
+    <div class="col-md-6">
+      <h2 class="mb-3">{{ book.title }}</h2>
+      <h4 class="text-muted mb-4">{{ book.author }}</h4>
+      <table class="table table-borderless book-info-table">
+        <tbody>
+          <tr>
+            <th scope="row">Артикул:</th>
+            <td>{{ book.id }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Издательство:</th>
+            <td>{{ book.copyright }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Возрастное ограничение:</th>
+            <td>{{ book.age_control }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Категория:</th>
+            <td>{{ book.category }}</td>
+          </tr>
+          <tr>
+            <th scope="row">ISBN:</th>
+            <td>{{ book.ISBN }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <br/>
-    <h4 class="text-center"> Отзывы </h4>
 
-    <section style="background-color: #eee;">
-        <div class="container my-5 py-5">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-lg-10 col-xl-8">
-                    {% for review in reviews %}
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex flex-start align-items-center">
-                                <div>
-                                    <h6 class="fw-bold text-primary mb-1">{{review.author}}</h6>
-                                    <p class="text-muted small mb-0">
-                                        Опубликовано - {{review.date}}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <p class="mt-3 mb-4 pb-2">
-                                {{review.review}}
-                            </p>
-
-                        </div>
-                        {% endfor %}
-                        {% if user.is_authenticated %}
-                        <form method="POST" action="{% url 'book_detail' id=book.id %}">
-                            {% csrf_token %}
-                            <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-                                <div class="d-flex flex-start w-100">
-                                    <div class="form-outline w-100">
-                                        <input id="textAreaExample" class="form-control" type="text"
-                                               style="background: #fff;" value="" name="comment"/>
-                                        <label class="form-label" for="textAreaExample">Комментарий</label>
-                                    </div>
-                                </div>
-                                <div class="float-end mt-2 pt-2">
-                                    <input class="form-control" type="text"
-                                           style="background: #fff;display:none;visibility:hidden;"
-                                           value={{book.id}} name="book"/>
-                                    <input type="submit" class="btn btn-primary btn-sm" value="Отправить"/>
-                                </div>
-                            </div>
-                        </form>
-                        {% endif %}
-
-                    </div>
-                </div>
-            </div>
+    <!-- Цена и кнопка "Добавить в корзину" -->
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm add-to-cart-card">
+        <div class="card-body">
+          <h3 class="card-title text-success">{{ book.price }} Р</h3>
+          <form method="post" action="{% url 'cart_change' %}">
+            {% csrf_token %}
+            <input type="hidden" name="book" value="{{ book.id }}">
+            <input type="hidden" name="count" value="1">
+            <button type="submit" class="btn btn-primary mt-3">Добавить в корзину</button>
+          </form>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-5">
+
+  <!-- Описание книги -->
+  <div class="row">
+    <div class="col">
+      <h4 class="mb-4 text-center">Описание</h4>
+      <p class="lead book-description">{{ book.description }}</p>
+    </div>
+  </div>
+
+  <hr class="my-5">
+
+  <!-- Отзывы -->
+  <div class="row">
+    <div class="col">
+      <h4 class="mb-4 text-center">Отзывы</h4>
+
+      {% for review in reviews %}
+      <div class="card mb-3 review-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="fw-bold text-primary mb-1">{{ review.author }}</h6>
+              <small class="text-muted">Опубликовано - {{ review.date }}</small>
+            </div>
+          </div>
+          <p class="mt-3 mb-0">{{ review.review }}</p>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-muted">Отзывы отсутствуют.</p>
+      {% endfor %}
+
+      {% if user.is_authenticated %}
+      <div class="card mt-4">
+        <div class="card-body">
+          <form method="POST" action="{% url 'book_detail' id=book.id %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="comment" class="form-label">Оставить отзыв</label>
+              <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="Напишите ваш отзыв..."></textarea>
+            </div>
+            <input type="hidden" name="book" value="{{ book.id }}">
+            <button type="submit" class="btn btn-primary">Отправить</button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
 </div>
 {% endblock content %}
